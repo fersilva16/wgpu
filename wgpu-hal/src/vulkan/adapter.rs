@@ -1303,6 +1303,15 @@ impl PhysicalDeviceProperties {
             extensions.push(ext::external_memory_dma_buf::NAME);
         }
 
+        // Optional `VK_EXT_image_drm_format_modifier`, as wgpu 30 enables it
+        // with `VULKAN_EXTERNAL_MEMORY_DMA_BUF`: imports a DMA-BUF that is not
+        // linear. Its dependencies are core from Vulkan 1.2.
+        if self.supports_extension(ext::image_drm_format_modifier::NAME)
+            && self.device_api_version >= vk::API_VERSION_1_2
+        {
+            extensions.push(ext::image_drm_format_modifier::NAME);
+        }
+
         // Optional `VK_EXT_memory_budget`
         if self.supports_extension(ext::memory_budget::NAME) {
             extensions.push(ext::memory_budget::NAME);
